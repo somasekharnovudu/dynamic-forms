@@ -1,0 +1,114 @@
+[
+    {
+        "type": "text",
+        "name": "name",
+        "id": "name-input",
+        "error": "",
+        "label": "Name"
+    },
+    {
+        "type": "date",
+        "name": "birthdate",
+        "id": "birth-date",
+        "error": "",
+        "label": "Birth Date"
+    },
+    {
+        "type": "color",
+        "name": "haircolor",
+        "id": "haircolor",
+        "error": "",
+        "label": "Hair Color"
+    },
+    {
+        "type": "select",
+        "name": "id_proof",
+        "id": "user_id_proof",
+        "label": "Select ID for Proof",
+        "multi": false,
+        "options": [
+            {
+                "label": "Aadhar",
+                "value": "aadhar"
+            },
+            {
+                "label": "Pan Card",
+                "value": "pancard"
+            },
+            {
+                "label": "License",
+                "value": "license"
+            }
+        ],
+        "conditionalElements": [
+            {
+                "renderVal": "aadhar",
+                "childElements": [
+                    {
+                        "type": "text",
+                        "label": "Aadhar Number",
+                        "name": "aadhar_no",
+                        "id": "aadhar_no"
+                    }
+                ]
+            },
+            {
+                "renderVal": "pancard",
+                "childElements": [
+                    {
+                        "type": "text",
+                        "label": "PAN Number",
+                        "name": "pan_no",
+                        "id": "pan_no"
+                    }
+                ]
+            },
+            {
+                "renderVal": "license",
+                "childElements": [
+                    {
+                        "type": "text",
+                        "label": "License Number",
+                        "name": "license_no",
+                        "id": "license_no"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "name": "gender",
+        "id": "usergender",
+        "label": "Select Gender",
+        "options": [
+            {
+                "label": "Male",
+                "value": "male"
+            },
+            {
+                "label": "Female",
+                "value": "female"
+            },
+            {
+                "label": "Others",
+                "value": "others"
+            }
+        ]
+    },
+    {
+        "type": "checkbox",
+        "name": "policy_list",
+        "label": "Policies in force",
+        "options": [
+            {
+                "label": "Term Policy",
+                "value": "term_policy"
+            },
+            {
+                "label": "Health Policy",
+                "value": "health_policy"
+            }
+        ]
+    }
+]
