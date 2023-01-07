@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import formJSON from './dform.json';
 import * as _ from 'lodash';
 import { Input, Select, RadioCheckGroup, Textarea } from './formComponents'
@@ -51,31 +51,42 @@ const recurrsiveRenderer = (obj, formValues, handleFormvalChange) => {
 
 const Dform = (props) => {
     const testValObj = {
-        name: "Soma Sekhar Novudu",
-        id_proof: 'aadhar',
-        aadhar_no: '91237123213 918273',
-        gender: 'male',
-        policy_list: ['health_policy'],
-        birthdate: '1993-08-12'
+        // name: "Soma Sekhar Novudu",
+        // id_proof: 'aadhar',
+        // aadhar_no: '91237123213 918273',
+        // gender: 'male',
+        // policy_list: ['health_policy'],
+        // birthdate: '1993-08-12'
     }
     const [formValues, setFormValues] = useState({ ...testValObj });
     const [formErrors, setFormErrors] = useState({});
 
+    useEffect(() => {
+        setTimeout(() => {
+            const testValObj = {
+                name: "Soma Sekhar Novudu",
+                id_proof: 'aadhar',
+                aadhar_no: '91237123213 918273',
+                gender: 'male',
+                policy_list: ['health_policy'],
+                birthdate: '1993-08-12'
+            }
+            setFormValues(testValObj);
+        }, 2000)
+    }, [])
+    /** Set the values to state object */
     const handleFormvalChange = (name, value) => {
         const formValObj = { ...formValues };
         _.set(formValObj, name, value);
         setFormValues({ ...formValObj });
     }
-
-    const formSubmitHandler = () => {
-        const filledFormValues = { ...formValues };
-
-    }
+    /** To be implemented */
+    const formSubmitHandler = () => { }
 
     return (
-        <div className="row g-3">
+        <div className="formset width40">
             {formJSON.map((formObj) => recurrsiveRenderer(formObj, formValues, handleFormvalChange))}
-            <button onClick={formSubmitHandler}>Submit Form</button>
+            <button className="btn-submit" onClick={formSubmitHandler}>Submit Form</button>
         </div>
     )
 

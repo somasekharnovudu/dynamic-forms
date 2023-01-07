@@ -27,7 +27,7 @@ export default (props) => {
     }
 
     return (
-        <div className="col-auto">
+        <div className="formFieldContainer">
             <label htmlFor={obj.id} className='form-label'>{obj.label}</label>
             {obj.options.map((optionObj) => <span ><input className='form-check' id={`${obj.name}_${optionObj.value}`} type={formType} key={optionObj.value} name={obj.name} onChange={({ target }) => { formValChangeHandler(target, optionObj.value) }} checked={getValueChecked(value, optionObj.value)} /> <label htmlFor={`${obj.name}_${optionObj.value}`} className="form-check-label">{optionObj.label}</label> </span>)}
         </div>
