@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import formJSON from './dform.json';
 import * as _ from 'lodash';
+import { Input, Select, RadioCheckGroup, Textarea } from './formComponents'
 
 const renderConditionalForm = (condForm, formValues, handleFormvalChange, parentVal) => {
     const renderVal = _.get(condForm, "renderVal", '');
@@ -20,45 +21,27 @@ const recurrsiveRenderer = (obj, formValues, handleFormvalChange) => {
     const formType = _.get(obj, 'type', '');
     if (formType == 'select') {
         return <div className="formContainer">
-            <div className="col-auto">
-                <label htmlFor={obj.id} class='form-label'>{obj.label}</label>
-                <select key={obj.name} name={obj.name} className='form-control' id={obj.id} multiple={obj.multi} onChange={({ target }) => handleFormvalChange(obj.name, target.value)} value={value}>
-                    <option selected disabled={value !== ''}> -- Select -- </option>
-                    {obj.options.map((optionObj) => <option key={optionObj.value} value={optionObj.value}>{optionObj.label}</option>)}
-                </select>
-            </div>
+            <Select handleFormvalChange={handleFormvalChange} formObj={obj} value={value} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (['text', 'password', 'email', 'number', 'color', 'range'].includes(formType)) {
         return <div className="formContainer">
-            <div className="col-auto">
-                <label htmlFor={obj.id} class='form-label'>{obj.label}</label>
-                <input type={formType} id={obj.id} className='form-control' value={value} name={obj.name} key={obj.name} onChange={({ target }) => handleFormvalChange(obj.name, target.value)} min={obj.min} max={obj.max} />
-            </div>
+            <Input handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (['radio', 'checkbox'].includes(formType)) {
         return <div className="formContainer">
-            <div className="col-auto">
-                <label htmlFor={obj.id} class='form-label'>{obj.label}</label>
-                {obj.options.map((optionObj) => <span ><input className='form-check' type={formType} key={optionObj.value} name={obj.name} onChange={({ target }) => { handleFormvalChange(obj.name, target.checked, formType, optionObj.value) }} checked={value.includes(optionObj.value)} /> <label className="form-check-label">{optionObj.label}</label> </span>)}
-            </div>
+            <RadioCheckGroup handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (formType === 'textarea') {
         return <div className="formContainer">
-            <div className="col-auto">
-                <label htmlFor={obj.id} class='form-label'>{obj.label}</label>
-                <textarea onChange={({ target }) => handleFormvalChange(obj.name, target.value)} name={obj.name}>{obj.value}</textarea>
-            </div>
+            <Textarea handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div >
     } else {
         return <div className="formContainer">
-            <div className="col-auto">
-                <label htmlFor={obj.id} class='form-label'>{obj.label}</label>
-                <input type={formType} id={obj.id} className='form-control' value={value} name={obj.name} key={obj.name} onChange={({ target }) => handleFormvalChange(obj.name, target.value)} />
-            </div>
+            <Input handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     }
@@ -75,6 +58,8 @@ const Dform = (props) => {
         birthdate: '1993-08-12'
     }
     const [formValues, setFormValues] = useState({ ...testValObj });
+    const [formErrors, setFormErrors] = useState({});
+
     const handleFormvalChange = (name, value, isOptionField, optionValue) => {
         const formValObj = { ...formValues };
         if (!isOptionField) {
@@ -102,10 +87,15 @@ const Dform = (props) => {
         }
 
     }
+    const formSubmitHandler = () => {
+        const filledFormValues = { ...formValues };
+
+    }
 
     return (
         <div className="row g-3">
             {formJSON.map((formObj) => recurrsiveRenderer(formObj, formValues, handleFormvalChange))}
+            <button onClick={formSubmitHandler}>Submit Form</button>
         </div>
     )
 
