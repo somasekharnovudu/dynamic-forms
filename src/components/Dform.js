@@ -19,29 +19,30 @@ const childElemrenderer = (formObj, formValues, handleFormvalChange) => {
 const recurrsiveRenderer = (obj, formValues, handleFormvalChange) => {
     let value = _.get(formValues, obj.name, '');
     const formType = _.get(obj, 'type', '');
+    const commonProps = { handleFormvalChange: handleFormvalChange, formObj: obj, value, formType }
     if (formType == 'select') {
         return <div className="formContainer">
-            <Select handleFormvalChange={handleFormvalChange} formObj={obj} value={value} />
+            <Select {...commonProps} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (['text', 'password', 'email', 'number', 'color', 'range'].includes(formType)) {
         return <div className="formContainer">
-            <Input handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
+            <Input {...commonProps} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (['radio', 'checkbox'].includes(formType)) {
         return <div className="formContainer">
-            <RadioCheckGroup handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
+            <RadioCheckGroup {...commonProps} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     } else if (formType === 'textarea') {
         return <div className="formContainer">
-            <Textarea handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
+            <Textarea {...commonProps} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div >
     } else {
         return <div className="formContainer">
-            <Input handleFormvalChange={handleFormvalChange} formObj={obj} value={value} formType={formType}/>
+            <Input {...commonProps} />
             {obj.conditionalElements && childElemrenderer(obj, formValues, handleFormvalChange)}
         </div>
     }
@@ -60,33 +61,12 @@ const Dform = (props) => {
     const [formValues, setFormValues] = useState({ ...testValObj });
     const [formErrors, setFormErrors] = useState({});
 
-    const handleFormvalChange = (name, value, isOptionField, optionValue) => {
+    const handleFormvalChange = (name, value) => {
         const formValObj = { ...formValues };
-        if (!isOptionField) {
-            _.set(formValObj, name, value);
-            setFormValues({ ...formValObj });
-            return;
-        }
-        if (isOptionField === 'radio') {
-            _.set(formValObj, name, optionValue);
-            setFormValues({ ...formValObj });
-            return;
-        }
-        if (isOptionField === 'checkbox') {
-            if (value) {
-                _.set(formValObj, name, [..._.get(formValObj, name, []), optionValue]);
-                setFormValues({ ...formValObj });
-                return;
-            }
-            if (value === false) {
-                const valueArr = _.get(formValObj, name, []);
-                _.set(formValObj, name, [..._.filter(valueArr, (itrStr) => itrStr !== optionValue)])
-                setFormValues({ ...formValObj });
-                return;
-            }
-        }
-
+        _.set(formValObj, name, value);
+        setFormValues({ ...formValObj });
     }
+
     const formSubmitHandler = () => {
         const filledFormValues = { ...formValues };
 

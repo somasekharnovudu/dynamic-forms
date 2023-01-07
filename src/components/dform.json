@@ -110,10 +110,5 @@
                 "value": "health_policy"
             }
         ]
-    },
-    {
-        "type": "textarea",
-        "name": "address",
-        "label": "Enter your address"
     }
 ]
