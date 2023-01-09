@@ -5,10 +5,17 @@ import { Input, Select, RadioCheckGroup, Textarea } from './formComponents'
 
 const renderConditionalForm = (condForm, formValues, handleFormvalChange, parentVal) => {
     const renderVal = _.get(condForm, "renderVal", '');
-    if (parentVal === renderVal) {
+    let renderChild = false;
+    if (Array.isArray(parentVal) && parentVal.includes(renderVal)) {
+        renderChild = true;
+    } else if (parentVal === renderVal) {
+        renderChild = true;
+    }
+    if (renderChild) {
         const formArr = _.get(condForm, 'childElements', [])
         return formArr.map((formObj) => recurrsiveRenderer(formObj, formValues, handleFormvalChange))
     }
+    return null;
 }
 
 const childElemrenderer = (formObj, formValues, handleFormvalChange) => {

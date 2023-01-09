@@ -109,6 +109,30 @@
                 "label": "Health Policy",
                 "value": "health_policy"
             }
+        ],
+        "conditionalElements": [
+            {
+                "renderVal": "term_policy",
+                "childElements": [
+                    {
+                        "type": "text",
+                        "label": "Term Policy Id",
+                        "name": "term_policy_id",
+                        "id": "term_policy_id"
+                    }
+                ]
+            },
+            {
+                "renderVal": "health_policy",
+                "childElements": [
+                    {
+                        "type": "text",
+                        "label": "Health Policy Id",
+                        "name": "health_policy_id",
+                        "id": "health_policy_id"
+                    }
+                ]
+            }
         ]
     }
 ]
